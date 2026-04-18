@@ -8,8 +8,11 @@
  */
 function capitalizeWords(str) {
   // Your code here
+ return str .split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1))
+.join(" ");
 }
-
+console.log(capitalizeWords("los angeles"));
+console.log(capitalizeWords("new york city"));
 /**
  * Truncates a string if it exceeds the maximum length, appending an ellipsis.
  * Must use a ternary operator for this implementation.
