@@ -275,18 +275,22 @@ class PersonClass {
     this.age = age;
     this.human = true;
   }
-
   canDrive() {
     return this.age >= 16;
   }
 }
+  
+
+  Person.prototype.canDrive = function () {
+    return this.age >= 16;
+}
+
 
 
 const person1 = new Person("Alisa", 31);
 const person2 = new Person("Luiza", 35);
 const person3 = new PersonClass("Kam", 10);
 
-
-Person.prototype.canDrive = function () {
-  return this.age >= 16;
-};
+console.log(person1.canDrive());
+console.log(person2.canDrive());
+console.log(person3.canDrive());
