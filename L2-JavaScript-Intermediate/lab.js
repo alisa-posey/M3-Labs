@@ -25,7 +25,10 @@ console.log(capitalizeWords("new york city"));
  */
 function truncate(str, maxLength) {
   // Your code here. Must use a ternary operator.
+  return str.length > maxLength ? str.slice(0, maxLength) + "..." : str;  
 }
+console.log(truncate("This text will be truncated", 25));
+console.log(truncate("Short text", 25));
 
 /**
  * Performs a series of array manipulations including adding elements, sorting, and replacing.
@@ -39,12 +42,22 @@ function truncate(str, maxLength) {
  * arrayManipulation(["Tiger", "Giraffe"], "Calf", "Bear", "Elephant", "Lion", "Zebra")
  * // returns sorted array with all elements added and middle replaced
  */
-function arrayManipulation(startArray) {
-  let animals = [...startArray]; // Create a copy to avoid modifying the original
-  // a) Add two new values to the end
-  // b) Add two new values to the beginning
-  // c) Sort the values alphabetically
-  // d) Replace the middle element with 'Calf'
+function arrayManipulation(startArray, replacement, newEnd1, newEnd2, newStart1, newStart2) {
+  const animals = [...startArray]; // Create a copy to avoid modifying the original
+
+  // a) Replace the original middle element with the replacement animal
+  const middleIndex = Math.floor(animals.length / 2);
+  animals[middleIndex] = replacement;
+
+  // b) Add two new values to the end
+  animals.push(newEnd1, newEnd2);
+
+  // c) Add two new values to the beginning
+  animals.unshift(newStart1, newStart2);
+
+  // d) Sort the values alphabetically
+  animals.sort();
+
   return animals;
 }
 
@@ -59,6 +72,12 @@ function arrayManipulation(startArray) {
  */
 function camelCase(cssProp) {
   // Your code here
+  return cssProp.split("-").map((word, index) => {
+    if (index === 0) {
+      return word; // Keep the first word lowercase
+    }
+    return word.charAt(0).toUpperCase() + word.slice(1); // Capitalize the first letter of subsequent words
+  }).join("");
 }
 
 /**
@@ -75,6 +94,24 @@ function camelCase(cssProp) {
  */
 function currencyOperation(float1, float2, operation, numDecimals = 2) {
   // Your code here. Should handle '+', '-', '*', '/'
+  let result;
+  switch (operation) {
+    case "+":
+      result = float1 + float2;
+      break;
+    case "-":
+      result = float1 - float2;
+      break;
+    case "*":
+      result = float1 * float2;
+      break;
+    case "/":
+      result = float1 / float2;
+      break;
+    default:
+      throw new Error("Invalid operation");
+  }
+  return parseFloat(result.toFixed(numDecimals));
 }
 
 /**
@@ -85,7 +122,10 @@ function currencyOperation(float1, float2, operation, numDecimals = 2) {
  * unique(["red", "green", "blue", "red", "yellow"]) // returns ["red", "green", "blue", "yellow"]
  */
 function unique(duplicatesArray) {
+
   // Your code here
+  return [...new Set(duplicatesArray)]; 
+
 }
 
 /**
@@ -105,11 +145,11 @@ function unique(duplicatesArray) {
  */
 function processBooks(books) {
   // a) Get the title of the book with id 1
-  const bookTitleWithId1 = undefined;
+  const bookTitleWithId1 = books.find((book) => book.id === 1)?.title;
   // b) Get all book objects written before 1950
-  const oldBooks = undefined;
+  const oldBooks = books.filter((book) => book.year < 1950);
   // c) Add a new genre property to each book with the value 'classic'
-  const booksWithGenre = undefined;
+  const booksWithGenre = books.map((book) => ({ ...book, genre: 'classic' }));
 
   return {
     bookTitleWithId1,
@@ -131,9 +171,13 @@ function processBooks(books) {
  */
 function managePhoneBook(phoneBookABC, phoneBookDEF, newCarolineNumber) {
   // Your code here.
+  
   // Update Caroline's number in phoneBookABC.
+  phoneBookABC.set("Caroline", newCarolineNumber);
   // Combine the two maps into a single new map.
+  const combinedPhoneBook = new Map([...phoneBookABC, ...phoneBookDEF]);
   // Return the new combined map.
+  return combinedPhoneBook;
 }
 
 /**
@@ -148,8 +192,8 @@ function managePhoneBook(phoneBookABC, phoneBookDEF, newCarolineNumber) {
  */
 function processSalaries(salaries) {
   // Your code here to calculate total and find top earner
-  const totalSalaries = 0;
-  const topEarner = "";
+  const totalSalaries = Object.values(salaries).reduce((sum, salary) => sum + salary, 0);
+  const topEarner = Object.keys(salaries).reduce((maxName, name) => salaries[name] > salaries[maxName] ? name : maxName, Object.keys(salaries)[0]);
 
   return { totalSalaries, topEarner };
 }
@@ -169,12 +213,12 @@ function processDate(date) {
   const today = new Date(date);
 
   // a) Get total minutes passed today
-  const minutesPassed = 0;
+  const minutesPassed = today.getHours() * 60 + today.getMinutes();
   // b) Get total seconds passed today
-  const secondsPassed = 0;
+  const secondsPassed = minutesPassed * 60 + today.getSeconds();
   // d) Calculate days between today and a future date
   const futureDate = new Date("2025-12-31");
-  const daysBetween = 0;
+  const daysBetween = Math.ceil((futureDate - today) / (1000 * 60 * 60 * 24));
 
   return {
     minutesPassed,
